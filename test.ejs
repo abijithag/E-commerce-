@@ -1,0 +1,411 @@
+                                    <div class="product_count">
+                                        <input type="text" name="qty" id="sst" maxlength="12" value="<%=cart.quantity%>" title="Quantity:"
+                                            class="input-text qty">
+                                        <button onclick="var result = document.getElementById('sst'); var sst = result.value; if( !isNaN( sst )) result.value++;return false;"
+                                            class="increase items-count" type="button"><i class="lnr lnr-chevron-up"></i></button>
+                                        <button onclick="var result = document.getElementById('sst'); var sst = result.value; if( !isNaN( sst ) && sst > 0 ) result.value--;return false;"
+                                            class="reduced items-count" type="button"><i class="lnr lnr-chevron-down"></i></button>
+                                    </div>
+                                    <div class="detail-qty border radius m-auto">
+                                        <button class="qty-btn" onclick="changeQuantity('<%= cart._id %>','<%=cart.carted.productId.%>','<%=user._id%>','<%=index%>',-1)"><i class="fi-rs-angle-small-down"></i></button>
+                                        <span id="qty-val-<%= cart.carted.productId %>" class="qty-val"><%= cart.carted.quantity %></span>
+                                        <button class="qty-btn" onclick="changeQuantity('<%= cart._id %>','<%=cart.carted.productId%>','<%=user._id%>','<%=index%>',1)"><i class="fi-rs-angle-small-up"></i></button>
+                                      </div>
+                                      <script>
+                                        function changeQuantity(proId, userId, quantity,count) {
+                                       
+                                    
+                                        $.ajax({
+                                          url: "/changeItemQuantity",
+                                          method: "post",
+                                          data: {
+                                            productId: proId,
+                                            userId: userId,
+                                            quantity: quantity,
+                                            count: count,
+                                          },
+                                          
+                                        success: (response) => {
+                                           if(response.deleteProduct){
+                                              location.reload(); // Reload the page
+                                           }else{
+                                                 console.log(response,'ajax response')
+                                            const quantityInput = document.getElementById(`quantityInput_${proId}`);
+                                            quantityInput.value = response.quantity;
+                                    
+                                            const total = document.getElementById('summary');
+                                            total.innerHTML = response.total;
+                                    
+                                            const subtotal = document.getElementById(`tsummary`);
+                                            subtotal.innerHTML = response.subtotal;
+                                    
+                                            // {{!-- const summarySubtotal = document.getElementById(`summary-subtotal`);
+                                            // summarySubtotal.textContent = response.subtotal --}}
+                                            
+                                           } 
+                                          }
+                                        })
+                                      }</script>
+
+                                    <td>
+                <div class="product_count">
+                    <input type="text" name="qty" id="quantityInput_{{this.carted._id}}" maxlength="12" value="{{this.quantity}}" title="Quantity:"
+                        class="input-text qty">
+                    <button onclick="changeQuantity('{{this.carted._id}}','{{this.user}}','{{this.quantity}}',1)"
+                        class="increase items-count" type="button"><i class="lnr lnr-chevron-up"></i></button>
+                    <button onclick="changeQuantity('{{this.carted._id}}','{{this.user}}','{{this.quantity}}',-1)"
+                        class="reduced items-count" type="button"><i class="lnr lnr-chevron-down"></i></button>
+                </div>
+            </td>
+
+
+ <script>
+         var mainImageInput = document.getElementById('main-image-input');
+        var mainImageContainer = document.getElementById('main-image-container');
+        var mainImageCropBtn = document.getElementById('crop-main-image');
+        var mainImageCropper;
+        var mainImageCroppedInput = document.getElementById('main-image-input');
+
+        mainImageInput.addEventListener('change', function(e) {
+            var file = e.target.files[0];
+            var reader = new FileReader();
+
+            reader.onload = function(event) {
+                mainImageContainer.innerHTML = '<img src="' + event.target.result + '">';
+                mainImageCropper = new Cropper(mainImageContainer.firstChild, {
+                    aspectRatio: 1,
+                    viewMode: 1,
+                    dragMode: 'move',
+                });
+            };
+
+            reader.readAsDataURL(file);
+        });
+
+        mainImageCropBtn.addEventListener('click', function() {
+            var croppedImage = mainImageCropper.getCroppedCanvas().toDataURL('image/jpeg');
+            mainImageCroppedInput.value = croppedImage;
+            console.log(mainImageCroppedInput.value);
+            // Perform further actions with the cropped image and input field
+        });
+
+        // Second Image
+        var secondImageInput = document.getElementById('second-image-input');
+        var secondImageContainer = document.getElementById('second-image-container');
+        var secondImageCropBtn = document.getElementById('crop-second-image');
+        var secondImageCropper;
+        var secondImageCroppedInput = document.getElementById('second-image-input');
+
+        secondImageInput.addEventListener('change', function(e) {
+            var file = e.target.files[0];
+            var reader = new FileReader();
+
+            reader.onload = function(event) {
+                secondImageContainer.innerHTML = '<img src="' + event.target.result + '">';
+                secondImageCropper = new Cropper(secondImageContainer.firstChild, {
+                    aspectRatio: 1,
+                    viewMode: 1,
+                    dragMode: 'move',
+                });
+            };
+
+            reader.readAsDataURL(file);
+        });
+
+        secondImageCropBtn.addEventListener('click', function() {
+            var croppedImage = secondImageCropper.getCroppedCanvas().toDataURL('image/jpeg');
+            secondImageCroppedInput.value = croppedImage;
+            console.log(secondImageCroppedInput.value);
+            // Perform further actions with the cropped image and input field
+        });
+
+        // Third Image
+        var thirdImageInput = document.getElementById('third-image-input');
+        var thirdImageContainer = document.getElementById('third-image-container');
+        var thirdImageCropBtn = document.getElementById('crop-third-image');
+        var thirdImageCropper;
+        var thirdImageCroppedInput = document.getElementById('third-image-input');
+
+        thirdImageInput.addEventListener('change', function(e) {
+            var file = e.target.files[0];
+            var reader = new FileReader();
+
+            reader.onload = function(event) {
+                thirdImageContainer.innerHTML = '<img src="' + event.target.result + '">';
+                thirdImageCropper = new Cropper(thirdImageContainer.firstChild, {
+                    aspectRatio: 1,
+                    viewMode: 1,
+                    dragMode: 'move',
+                });
+            };
+
+            reader.readAsDataURL(file);
+        });
+
+        thirdImageCropBtn.addEventListener('click', function() {
+            var croppedImage = thirdImageCropper.getCroppedCanvas().toDataURL('image/jpeg');
+            thirdImageCroppedInput.value = croppedImage;
+            console.log(thirdImageCroppedInput.value);
+            // Perform further actions with the cropped image and input field
+        });
+    </script>
+
+<section class="banner-area">
+		<div class="container">
+			<div class="row fullscreen align-items-center justify-content-start">
+				<div class="col-lg-12">
+					<div class="active-banner-slider owl-carousel">
+						<!-- single-slide -->
+						<% banner.forEach((banner,index) => { %>
+					<div class="carousel-item <%= index === 0 ? 'active' : '' %>">
+						<div class="row single-slide align-items-center d-flex">
+							<div class="col-lg-12">
+								<div class="banner-img">
+									<a href="<%=banner.link%>"><img class="img-fluid" src="../banner-images/<%= banner.image %>"  style="width: 100%; height: 390px;" alt=""></a>
+								</div>
+							</div>
+						</div>
+					</div>
+						<% }) %>
+						<a class="carousel-control-prev" href="#bannerSlider" role="button" data-slide="prev" style="align-items:end; margin-bottom: 10px;" >
+							<img src="img/banner/prev.png">
+							<span class="sr-only">Previous</span>
+						  </a>
+						  <a class="carousel-control-next" href="#bannerSlider" role="button" data-slide="next" style="align-items:end;margin-bottom: 10px;">
+							<img src="img/banner/next.png">
+							<span class="sr-only">Next</span>
+						  </a>
+
+					
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+
+    <form class="forms-sample" action="/admin/addBanner" method="POST"  enctype="multipart/form-data" id="myform">
+        <div class="form-group">
+          <label for="exampleInputName1">Title</label>
+          <input type="text" class="form-control" id="name" name="title" onkeyup="titleValidation()">
+          <p id="error1" class="text-danger"></p>
+        </div>
+        <span id="title-error" class="validation-label"></span>
+          <br />
+        <div class="form-group">
+          <label for="exampleTextarea1">Description</label>
+          <textarea class="form-control" id="description" rows="4" name="description" onkeyup="descriptionValidation()"></textarea>
+          <p id="error3" class="text-danger"></p>
+        </div>
+        <span id="description-error" class="validation-label"></span>
+        <br />
+        <div class="form-group">
+          <label for="productImage">Image:</label>
+          <input type="file" class="form-control" name="image" id="image" required>
+        </div>
+  
+        <% if (typeof message !== 'undefined') { %>
+                          <center>
+                          <div class="audun_warn">
+                              <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+                              <%= message %>
+                          </div>
+                          </center>
+                      <% } %>
+        
+        <button type="submit" class="btn btn-primary mr-2" onclick="validate()">Submit</button>
+        <button class="btn btn-dark">Cancel</button>
+      </form>
+
+
+  <script>
+    let regex = /^(?!\s*$).+/;
+  
+    let description = document.getElementById("description");
+    let link = document.getElementById("link");
+  
+    let titleError = document.getElementById("title-error");
+    let descriptionError = document.getElementById("description-error");
+    let linkError = document.getElementById("link-error");
+  
+    let myform = document.getElementById("myform");
+  
+    function titleValidation() {
+      let name = document.getElementById("name").value;
+      let nameInput = document.getElementById("name");
+      if (name.length == 0) {
+        titleError.innerHTML = "Title is required";
+        titleError.style.color = "red";
+        nameInput.style.border = "solid 2px red";
+        return false;
+      }
+      if (!name.match(regex)) {
+        titleError.innerHTML = "Write valid Title";
+        titleError.style.color = "red";
+        nameInput.style.border = "solid 2px red";
+        return false;
+      }
+      titleError.innerHTML = "";
+      titleError.style.color = "green";
+      nameInput.style.border = "solid 2px green";
+      return true;
+    }
+  
+    function descriptionValidation() {
+      let name = document.getElementById("description").value;
+      let nameInput = document.getElementById("description");
+      if (name.length == 0) {
+        descriptionError.innerHTML = "Description is required";
+        descriptionError.style.color = "red";
+        nameInput.style.border = "solid 2px red";
+        return false;
+      }
+      if (!name.match(regex)) {
+        descriptionError.innerHTML = "Write valid Description";
+        descriptionError.style.color = "red";
+        nameInput.style.border = "solid 2px red";
+        return false;
+      }
+      descriptionError.innerHTML = "";
+      descriptionError.style.color = "green";
+      nameInput.style.border = "solid 2px green";
+      return true;
+    }
+  
+    myform.addEventListener("submit", (event) => {
+      event.preventDefault();
+      if (!titleValidation() || !descriptionValidation()) {
+        return false;
+      } else {
+        myform.submit();
+      }
+    });
+  </script>
+
+
+
+
+
+
+
+
+
+
+<style>
+  /* Keep your existing CSS styles */
+  .img_zoom_container {
+    position: relative;
+    overflow: hidden;
+    cursor: zoom-in;
+  }
+
+  .img_zoom {
+    transition: transform 0.9s ease-in-out;
+    transform-origin: center center;
+  }
+
+  /* Remove the background-image style from figure.zoom */
+  figure.zoom {
+    background-position: 50% 50%;
+    position: relative;
+    margin: 100px auto;
+    border: 5px solid white;
+    box-shadow: -1px 5px 15px black;
+    height: 350px;
+    width: 500px;
+    overflow: hidden;
+    cursor: zoom-in;
+  }
+
+  /* Add a rule to hide the img inside the figure */
+  figure.zoom img {
+    display: none;
+  }
+   .img_zoom_container {
+    position: relative;
+    overflow: hidden;
+    cursor: zoom-in;
+  }
+
+  .img_zoom {
+    transition: transform 0.9s ease-in-out;
+    transform-origin: center center;
+  }
+</style>
+
+<div class="product_image_area ">
+  <div class="container">
+    <div class="row s_product_inner">
+   
+     <div class="col-lg-6">
+        <div class="s_Product_carousel">
+          {{#each product.images}}
+          <div class="single-prd-item img_zoom_container">
+            <figure class="zoom" onmousemove="zoom(event)" onmouseout="resetZoom(event)">
+            <img class="img-fluid" src="/product-images/{{this}}" alt="Image">
+            </figure>
+          </div>
+          {{/each}}
+        </div>
+      </div>
+<div class="col-lg-5 offset-lg-1">
+  <div class="s_product_text">
+    <h3>{{product.productName}}</h3>
+    <h2>₹{{product.productPrice}}</h2>
+    <ul class="list">
+      <li><a class="active" href="#"><span>Category</span> : {{category.categoryName}}</a></li>
+      {{#if (gt product.productQuantity 0)}}
+      <li><a href="#"><span>Availability</span> : In Stock</a></li>
+      {{else}}
+      <li><a href="#"><span>Availability</span> : Out of Stock</a></li>
+      {{/if}}
+    </ul>
+    <p>{{product.productDescription}}</p>
+    <div class="card_area d-flex align-items-center">
+      <a href="" class="primary-btn" onclick="addToCart('{{product._id}}'); return false;">Add to Cart</a>
+      <a class="icon_btn" onclick="addToWishlist('{{product._id}}'); return false;"><i class="lnr lnr-heart"></i></a>
+    </div>
+  </div>
+</div>
+
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="popupModal" tabindex="-1" role="dialog" aria-labelledby="popupModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="popupModalLabel">Message</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p id="popupMessage"></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="/javascripts/singleproduct.js"></script>
+
+<script>
+  function zoom(event) {
+    var zoomer = event.currentTarget;
+    var offsetX = event.offsetX ? event.offsetX : event.touches[0].pageX;
+    var offsetY = event.offsetY ? event.offsetY : event.touches[0].pageY;
+    var x = (offsetX / zoomer.offsetWidth) * 100;
+    var y = (offsetY / zoomer.offsetHeight) * 100;
+    zoomer.querySelector('img').style.transform = 'scale(2.0)';
+    zoomer.querySelector('img').style.transformOrigin = x + '% ' + y + '%';
+  }
+
+  function resetZoom(event) {
+    var zoomer = event.currentTarget;
+    zoomer.querySelector('img').style.transform = 'none';
+  }
+</script>
